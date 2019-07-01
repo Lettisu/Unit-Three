@@ -27,14 +27,15 @@ $("#design").on('change', function () {
 });
 
 
-
+let totalActCost = 0;
 $(".activities").append('<label id="total">Total Act Cost:$ </label>');
-// document.getElementById("total").innerHTML = "<p><strong>Total: $" + totalActCost + "</strong></p>"
+document.getElementById("total").innerHTML = "<p><strong>Total: $" + totalActCost + "</strong></p>"
 
 $('[type = "checkbox"]').change((event) => {
     let totalActCost = 0;
+
     if ($(`input[name="all"]`).prop("checked")) {
-        totalActCost += 200;
+        totalActCost += 200; //console.log(totalActCost);
     }
 
     if ($(`input[name="build-tools"]`).prop("checked")) {
@@ -73,6 +74,35 @@ $('[type = "checkbox"]').change((event) => {
         $(`input[name="js-frameworks"]`).removeAttr("disabled")
     }
 
-    document.getElementById("total").innerHTML = "<p><strong>Total: $" + totalActCost + "</strong></p>"
-
+    $("#total").html("<p><strong>Total: $" + totalActCost + "</strong></p>")
 });
+
+$("#credit-card").siblings().eq(3).addClass("paypal");
+$("#credit-card").siblings().eq(4).addClass("bitcoin");
+$('select option[value="credit card"]').attr("selected", true);
+$('select option[value="select_method"]').attr("disabled", true);
+$('select option[value="select_method"]').hide();
+$(".paypal").hide();
+$(".bitcoin").hide();
+
+
+
+$("#payment").on('change', function () {
+        if ($(this).val() === "credit card") {
+            $("#credit-card").show();
+            $(".paypal").hide();
+            $(".bitcoin").hide();
+        } else if ($(this).val() === "paypal") {
+            $("#credit-card").hide();
+            $(".paypal").show();
+            $(".bitcoin").hide();
+        } else if ($(this).val() === "bitcoin") {
+            $("#credit-card").hide();
+            $(".bitcoin").show();
+            $(".paypal").hide();
+        }
+
+
+    }
+
+);
