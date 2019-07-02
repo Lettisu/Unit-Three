@@ -106,3 +106,140 @@ $("#payment").on('change', function () {
     }
 
 );
+
+$('label[for="name"]').before('<label class="error" id="name-error"><font color="red">Name field is empty</font ></label>');
+$('label[for="mail"]').before('<label class="error" id="email-error"><font color="red">Please enter a valid email address</font></label>');
+$('.activities legend').before('<label class="error" id="activity-error"><font color="red">Please select an activity</font></label>');
+$('#credit-card').before('<label class="error" id="cc-empty-error"><font color="red">Credit Card Number needed</font></label>');
+$('#credit-card').before('<label class="error" id="cc-number-error"><font color="red">Please enter a number between 13 and 16 digits</font></label>');
+$('#credit-card').before('<label class="error" id="cc-zip-error"><font color="red">Please enter 5 digit Zip Code</font></label>');
+$('#credit-card').before('<label class="error" id="cc-cvv-error"><font color="red">Please enter 3 digit CVV number</font></label>');
+$('.error').hide();
+
+
+
+const isValidUserName = (username) => {
+    const valid = /^\S/.test(username);
+    if (valid) {
+        $("#name-error").hide();
+        return true;
+     } else {
+        $("#name-error").show();
+        return false;
+    }
+}
+
+const isValidEmail = (email) => {
+    const valid = /^[^@]+@[^@.]+\.[a-z]+$/i.test(email);
+    if (valid) {
+        $("#email-error").hide();
+        return true;
+    } else {
+        $("#email-error").show();
+        return false;
+    }
+
+}
+    
+const isValidActivity = () => {
+    if ($(".activities input:checked").length > 0) {
+        $("#activity-error").hide();
+        return true;
+    } else {
+        $("#activity-error").show();
+        return false;
+    }
+}
+  
+const isValidCCNum = (cc) => {
+    if ($("#payment").val() === "credit card") {
+        const valid = /^\d{13,16}$/.test(cc);
+        if (valid) {
+            $("#cc-number-error").hide();
+            $("#cc-empty-error").hide();
+            return true;
+        } else if (cc !== ' ') {
+            $("#cc-empty-error").hide();
+            $("#cc-number-error").show();
+
+        } else {
+            $("#cc-number-error").hide();
+            $("#cc-empty-error").show();
+            return false;
+        }
+    }     
+
+}
+const validZC = (zip) => {
+    if ($("#payment").val() === "credit card") {
+        let valid = /^\d{5}$/.test(zip);
+        if (valid) {
+            $("#cc-zip-error").hide();
+            return true;
+        } else {
+            $("#cc-zip-error").show();
+            return false;
+        }
+    }
+}
+
+
+const isValidCVV = (cvv) => {
+    if ($("#payment").val() === "credit card") {
+        let valid = /^\d{3}$/.test(cvv);
+        if (valid) {
+            $("#cc-cvv-error").hide();
+            return true;
+        } else {
+            $("#cc-cvv-error").show();
+            return false;
+        }
+
+    }
+}
+
+const formValid = () => {
+    if ($("#payment").val() === "credit card") {
+        if (isValidUserName($("#name").val()) && isValidEmail($("#mail").val())
+            && isValidActivity() && isValidCCNum($("#cc-num").val()) &&
+            validZC($("#zip").val()) && isValidCVV($("#cvv").val())) {
+            return true;
+
+    } else {
+        isValidUserName($("#name"));
+        isValidEmail($("#mail"));
+        isValidActivity($());
+        isValidCCNum($("#cc-num").val());
+        validZC($("#zip").val());
+        isValidCVV($("#cvv").val());
+        return false;
+    }
+        } else {
+        if (isValidUserName($("#name").val()) && isValidEmail($("#mail").val())
+            && isValidActivity()) {
+           return true;
+         } else {
+           isValidUserName($("#name").val());
+           isValidEmail($("#mail").val());
+           isValidActivity();
+           return false;
+        }
+        }
+        }
+
+         $("form").on("submit", (e) => {
+        if (formValid() === true) {
+         window.location.reload();
+        } else {
+          e.preventDefault();
+        }
+        });
+        
+            
+            
+            
+
+    
+
+
+
