@@ -26,7 +26,7 @@ $("#design").on('change', function () {
         $("#colors-js-puns").hide();
 });
 
-
+//Activities section
 let totalActCost = 0;
 $(".activities").append('<label id="total">Total Act Cost:$ </label>');
 document.getElementById("total").innerHTML = "<p><strong>Total: $" + totalActCost + "</strong></p>"
@@ -106,7 +106,7 @@ $("#payment").on('change', function () {
     }
 
 );
-
+//Error messages
 $('label[for="name"]').before('<label class="error" id="name-error"><font color="red">Name field is empty</font ></label>');
 $('label[for="mail"]').before('<label class="error" id="email-error"><font color="red">Please enter a valid email address</font></label>');
 $('.activities legend').before('<label class="error" id="activity-error"><font color="red">Please select an activity</font></label>');
@@ -116,14 +116,14 @@ $('#credit-card').before('<label class="error" id="cc-zip-error"><font color="re
 $('#credit-card').before('<label class="error" id="cc-cvv-error"><font color="red">Please enter 3 digit CVV number</font></label>');
 $('.error').hide();
 
-
+//Validations
 
 const isValidUserName = (username) => {
     const valid = /^\S/.test(username);
     if (valid) {
         $("#name-error").hide();
         return true;
-     } else {
+    } else {
         $("#name-error").show();
         return false;
     }
@@ -140,7 +140,7 @@ const isValidEmail = (email) => {
     }
 
 }
-    
+
 const isValidActivity = () => {
     if ($(".activities input:checked").length > 0) {
         $("#activity-error").hide();
@@ -150,7 +150,20 @@ const isValidActivity = () => {
         return false;
     }
 }
-  
+$("#payment").on("change", function () {
+    if ($("#payment").val() === "paypal" || $("#payment").val() === "bitcoin") {
+        $("#cc-cvv-error").hide();
+        $("cc-zip-error").hide();
+        $("#cc-number-error").hide();
+        $("#cc-empty-error").hide();
+
+
+    }
+
+});
+
+
+
 const isValidCCNum = (cc) => {
     if ($("#payment").val() === "credit card") {
         const valid = /^\d{13,16}$/.test(cc);
@@ -167,7 +180,7 @@ const isValidCCNum = (cc) => {
             $("#cc-empty-error").show();
             return false;
         }
-    }     
+    }
 
 }
 const validZC = (zip) => {
@@ -197,49 +210,40 @@ const isValidCVV = (cvv) => {
 
     }
 }
-
+//Form Vaildation
 const formValid = () => {
     if ($("#payment").val() === "credit card") {
-        if (isValidUserName($("#name").val()) && isValidEmail($("#mail").val())
-            && isValidActivity() && isValidCCNum($("#cc-num").val()) &&
+        if (isValidUserName($("#name").val()) && isValidEmail($("#mail").val()) &&
+            isValidActivity() && isValidCCNum($("#cc-num").val()) &&
             validZC($("#zip").val()) && isValidCVV($("#cvv").val())) {
             return true;
 
+        } else {
+            isValidUserName($("#name").val());
+            isValidEmail($("#mail").val());
+            isValidActivity($());
+            isValidCCNum($("#cc-num").val());
+            validZC($("#zip").val());
+            isValidCVV($("#cvv").val());
+            return false;
+        }
     } else {
-        isValidUserName($("#name"));
-        isValidEmail($("#mail"));
-        isValidActivity($());
-        isValidCCNum($("#cc-num").val());
-        validZC($("#zip").val());
-        isValidCVV($("#cvv").val());
-        return false;
+        if (isValidUserName($("#name").val()) && isValidEmail($("#mail").val()) &&
+            isValidActivity()) {
+            return true;
+        } else {
+            isValidUserName($("#name").val());
+            isValidEmail($("#mail").val());
+            isValidActivity();
+            return false;
+        }
     }
-        } else {
-        if (isValidUserName($("#name").val()) && isValidEmail($("#mail").val())
-            && isValidActivity()) {
-           return true;
-         } else {
-           isValidUserName($("#name").val());
-           isValidEmail($("#mail").val());
-           isValidActivity();
-           return false;
-        }
-        }
-        }
-
-         $("form").on("submit", (e) => {
-        if (formValid() === true) {
-         window.location.reload();
-        } else {
-          e.preventDefault();
-        }
-        });
-        
-            
-            
-            
-
-    
-
-
-
+}
+//Totality
+$("form").on("submit", (e) => {
+    if (formValid() === true) {
+        window.location.reload();
+    } else {
+        e.preventDefault();
+    }
+});
