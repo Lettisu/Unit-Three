@@ -9,6 +9,7 @@ $("#title").on('change', function () //listening for a change on the title id
             $("#other-title").hide();
         }
     });
+//t-Shirt selection
 $("#colors-js-puns").hide();
 $("#design").on('change', function () {
     $("#color").html('');
@@ -76,7 +77,7 @@ $('[type = "checkbox"]').change((event) => {
 
     $("#total").html("<p><strong>Total: $" + totalActCost + "</strong></p>")
 });
-
+//Payment Section
 $("#credit-card").siblings().eq(3).addClass("paypal");
 $("#credit-card").siblings().eq(4).addClass("bitcoin");
 $('select option[value="credit card"]').attr("selected", true);
